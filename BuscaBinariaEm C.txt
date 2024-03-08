@@ -1,0 +1,61 @@
+//*'''
+
+//*Welcome to GDB Online.
+//*GDB online is an online compiler and debugger tool for C, C++, Python, Java, PHP, Ruby, Perl,
+//*C#, OCaml, VB, Swift, Pascal, Fortran, Haskell, Objective-C, Assembly, HTML, CSS, JS, SQLite, Prolog.
+//*Code, Compile, Run and Debug online from anywhere in world.
+
+//*'''
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define MAX_SIZE 10000000
+
+// Função para busca sequencial
+int buscaSequencial(int chave, int *V, int tamanho) {
+    for (int i = 0; i < tamanho; i++) {
+        if (V[i] == chave) {
+            return i; // Retorna o índice onde a chave foi encontrada
+        }
+    }
+    return -1; // Retorna -1 se a chave não for encontrada
+}
+
+int main() {
+    int n_values[] = {10, 100, 1000, 10000}; // Valores de n
+    int q = 1000; // Número de buscas a serem realizadas
+    int *V = (int *)malloc(MAX_SIZE * sizeof(int)); // Sequência de tamanho máximo
+
+    // Preencher a sequência com valores aleatórios
+    for (int i = 0; i < MAX_SIZE; i++) {
+        V[i] = rand();
+    }
+
+    printf("n\tTempo(s)\n");
+
+    // Loop para diferentes valores de n
+    for (int j = 0; j < sizeof(n_values) / sizeof(n_values[0]); j++) {
+        clock_t start_time, end_time;
+        double total_time = 0;
+
+        int n = n_values[j];
+        printf("%d\t", n);
+
+        // Executar a busca sequencial 'q' vezes
+        for (int k = 0; k < q; k++) {
+            int chave = rand(); // Gerar chave de busca aleatória
+
+            start_time = clock(); // Registrar o tempo de início da busca
+            buscaSequencial(chave, V, n);
+            end_time = clock(); // Registrar o tempo de término da busca
+
+            total_time += (double)(end_time - start_time) / CLOCKS_PER_SEC; // Adicionar o tempo de busca ao total
+        }
+
+        printf("%f\n", total_time / q); // Imprimir o tempo médio de busca para o valor de n
+    }
+
+    free(V); // Liberar memória alocada
+    return 0;
+}
